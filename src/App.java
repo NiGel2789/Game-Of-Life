@@ -40,7 +40,7 @@ public class App {
                 g.setSize(400, 400);
                 JPanel explanationPanel = new JPanel();
                 JLabel instr1 = new JLabel("<html> The Game of Life is not your typical computer game. It is a cellular automaton, and was invented by Cambridge mathematician John Conway. <br><br>This game became widely known when it was mentioned in an article published by Scientific American in 1970. <br>It consists of a collection of cells which, based on a few mathematical rules, can live, die or multiply. Depending on the initial conditions, the cells form various <br>patterns throughout the course of the game.<html>", SwingConstants.LEFT);
-    
+                
                 
                 explanationPanel.add(instr1);
                
