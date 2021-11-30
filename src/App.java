@@ -1,8 +1,18 @@
-import javax.swing.*;  
+import javax.swing.*;
+
+
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-public class App {
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+public class App{
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -33,17 +43,115 @@ public class App {
         // Explanation Button
         JButton send = new JButton("Explanation");
 
-        // Explanation Button Handler
+        // Loads up the instruction page
         send.addActionListener(new ActionListener(){  
             public void actionPerformed(ActionEvent e){  
                 JFrame g = new JFrame();
-                g.setSize(400, 400);
+                g.setBounds(400,400,600,600);
+                
                 JPanel explanationPanel = new JPanel();
+                explanationPanel.setLayout(new BoxLayout(explanationPanel, BoxLayout.PAGE_AXIS));
+
                 JLabel instr1 = new JLabel("<html> The Game of Life is not your typical computer game. It is a cellular automaton, and was invented by Cambridge mathematician John Conway. <br><br>This game became widely known when it was mentioned in an article published by Scientific American in 1970. <br>It consists of a collection of cells which, based on a few mathematical rules, can live, die or multiply. Depending on the initial conditions, the cells form various <br>patterns throughout the course of the game.<html>", SwingConstants.LEFT);
+                JLabel rules = new JLabel("<html><br><br><b>RULES</b><br><br> <b>For a space that is populated:<b><br> <html>");
+                
+                JLabel rule1 = new JLabel("<html>Each cell with one or no neighbors dies, as if by solitude.");
                 
                 
+                JLabel rule2 = new JLabel("<html>Each cell with four or more neighbors dies, as if by overpopulation.<html>");
+
+                JLabel rule3 = new JLabel("<html>Each cell with two or three neighbors survives.<html>");
+
+                JLabel instr2 = new JLabel("<html>For a space that is empty or unpopulated<html>");
+
+                JLabel rule4 = new JLabel("<html>Each cell with three neighbors becomes populated.<html>");
+                
+                instr1.setBorder(new EmptyBorder(20,5,0,0));//top,left,bottom,right
+                rules.setBorder(new EmptyBorder(5,5,10,0));//top,left,bottom,right
+                rule1.setBorder(new EmptyBorder(0,5,0,0));//top,left,bottom,right
+                rule2.setBorder(new EmptyBorder(0,5,0,0));//top,left,bottom,right
+                rule3.setBorder(new EmptyBorder(0,5,0,0));//top,left,bottom,right
+                rule4.setBorder(new EmptyBorder(0,5,0,0));//top,left,bottom,right
+                instr2.setBorder(new EmptyBorder(0,5,0,0));//top,left,bottom,right
+
                 explanationPanel.add(instr1);
-               
+                explanationPanel.add(rules);
+                explanationPanel.add(rule1);
+                BufferedImage myPicture1;
+                BufferedImage myPicture2;
+                BufferedImage redo;
+                try {
+                    myPicture1 = ImageIO.read(getClass().getResource("/instructionvisuals/noneighbor1.png"));
+                    JLabel picLabel1 = new JLabel(new ImageIcon(myPicture1));
+                    redo = ImageIO.read(getClass().getResource("/instructionvisuals/redo.png"));
+                    JLabel picLabel2 = new JLabel(new ImageIcon(redo));
+                    myPicture2 = ImageIO.read(getClass().getResource("/instructionvisuals/noneighbor2.png"));
+                    JLabel picLabel3 = new JLabel(new ImageIcon(myPicture2));
+                    picLabel1.setBorder(new EmptyBorder(10,10,0,0));//top,left,bottom,right
+                    picLabel2.setBorder(new EmptyBorder(0,20,0,0));//top,left,bottom,right
+                    picLabel3.setBorder(new EmptyBorder(0,10,10,0));//top,left,bottom,right
+                    explanationPanel.add(picLabel1);
+                    explanationPanel.add(picLabel2);
+                    explanationPanel.add(picLabel3);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                explanationPanel.add(rule2);
+                try {
+                    myPicture1 = ImageIO.read(getClass().getResource("/instructionvisuals/4neighbor1.png"));
+                    JLabel picLabel1 = new JLabel(new ImageIcon(myPicture1));
+                    redo = ImageIO.read(getClass().getResource("/instructionvisuals/redo.png"));
+                    JLabel picLabel2 = new JLabel(new ImageIcon(redo));
+                    myPicture2 = ImageIO.read(getClass().getResource("/instructionvisuals/4neighbor2.png"));
+                    JLabel picLabel3 = new JLabel(new ImageIcon(myPicture2));
+                    picLabel1.setBorder(new EmptyBorder(10,10,0,0));//top,left,bottom,right
+                    picLabel2.setBorder(new EmptyBorder(0,20,0,0));//top,left,bottom,right
+                    picLabel3.setBorder(new EmptyBorder(0,10,10,0));//top,left,bottom,right
+                    explanationPanel.add(picLabel1);
+                    explanationPanel.add(picLabel2);
+                    explanationPanel.add(picLabel3);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                explanationPanel.add(rule3);
+                try {
+                    myPicture1 = ImageIO.read(getClass().getResource("/instructionvisuals/2or3neighbor1.png"));
+                    JLabel picLabel1 = new JLabel(new ImageIcon(myPicture1));
+                    redo = ImageIO.read(getClass().getResource("/instructionvisuals/redo.png"));
+                    JLabel picLabel2 = new JLabel(new ImageIcon(redo));
+                    myPicture2 = ImageIO.read(getClass().getResource("/instructionvisuals/2or3neighbor2.png"));
+                    JLabel picLabel3 = new JLabel(new ImageIcon(myPicture2));
+                    picLabel1.setBorder(new EmptyBorder(10,10,0,0));//top,left,bottom,right
+                    picLabel2.setBorder(new EmptyBorder(0,20,0,0));//top,left,bottom,right
+                    picLabel3.setBorder(new EmptyBorder(0,10,10,0));//top,left,bottom,right
+                    explanationPanel.add(picLabel1);
+                    explanationPanel.add(picLabel2);
+                    explanationPanel.add(picLabel3);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                explanationPanel.add(instr2);
+                explanationPanel.add(rule4);
+                try {
+                    myPicture1 = ImageIO.read(getClass().getResource("/instructionvisuals/empty1.png"));
+                    JLabel picLabel1 = new JLabel(new ImageIcon(myPicture1));
+                    redo = ImageIO.read(getClass().getResource("/instructionvisuals/redo.png"));
+                    JLabel picLabel2 = new JLabel(new ImageIcon(redo));
+                    myPicture2 = ImageIO.read(getClass().getResource("/instructionvisuals/empty2.png"));
+                    JLabel picLabel3 = new JLabel(new ImageIcon(myPicture2));
+                    picLabel1.setBorder(new EmptyBorder(10,10,0,0));//top,left,bottom,right
+                    picLabel2.setBorder(new EmptyBorder(0,20,0,0));//top,left,bottom,right
+                    picLabel3.setBorder(new EmptyBorder(0,10,10,0));//top,left,bottom,right
+                    explanationPanel.add(picLabel1);
+                    explanationPanel.add(picLabel2);
+                    explanationPanel.add(picLabel3);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 
                 g.getContentPane().add(BorderLayout.NORTH, explanationPanel);
                 g.pack();
