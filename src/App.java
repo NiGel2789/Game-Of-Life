@@ -93,10 +93,10 @@ public class App {
                 JFrame g = new JFrame();
                 g.setSize(400, 400);
                 JPanel explanationPanel = new JPanel();
-                JTextField instr1 = new JTextField("The Game of Life is not your typical computer game.");
-                JTextField instr2 = new JTextField("It is a cellular automaton, and was invented by Cambridge mathematician John Conway.");
-                JTextField instr3 = new JTextField("This game became widely known when it was mentioned in an article published by Scientific American in 1970. It consists of a collection of cells which, based on a few mathematical rules, can live, die or multiply."); 
-                JTextField instr4 = new JTextField("Depending on the initial conditions, the cells form various patterns throughout the course of the game.");
+                JTextField instr1 = new JTextField("The Game of Life is not your typical computer game.", 5);
+                JTextField instr2 = new JTextField("It is a cellular automaton, and was invented by Cambridge mathematician John Conway.",5);
+                JTextField instr3 = new JTextField("This game became widely known when it was mentioned in an article published by Scientific American in 1970. It consists of a collection of cells which, based on a few mathematical rules, can live, die or multiply.",5); 
+                JTextField instr4 = new JTextField("Depending on the initial conditions, the cells form various patterns throughout the course of the game.",5);
                 explanationPanel.add(instr1);
                 explanationPanel.add(instr2);
                 explanationPanel.add(instr3);
