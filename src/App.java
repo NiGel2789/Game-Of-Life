@@ -3,7 +3,6 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +10,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.synth.SynthSpinnerUI;
 
 public class App{
     public static void main(String[] args) {
@@ -50,6 +50,7 @@ public class App{
                 g.setBounds(400,400,600,600);
                 
                 JPanel explanationPanel = new JPanel();
+                JScrollPane scrPane = new JScrollPane(explanationPanel);
                 explanationPanel.setLayout(new BoxLayout(explanationPanel, BoxLayout.PAGE_AXIS));
 
                 JLabel instr1 = new JLabel("<html> The Game of Life is not your typical computer game. It is a cellular automaton, and was invented by Cambridge mathematician John Conway. <br><br>This game became widely known when it was mentioned in an article published by Scientific American in 1970. <br>It consists of a collection of cells which, based on a few mathematical rules, can live, die or multiply. Depending on the initial conditions, the cells form various <br>patterns throughout the course of the game.<html>", SwingConstants.LEFT);
@@ -163,13 +164,24 @@ public class App{
         JButton start = new JButton("Start");
 
         // Start Button Handler
-            // to-do
+        start.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){
+                // call calculate generation while there exists a 
+                // populated square
+                grid.fetchCurrentData(1);
+
+            }
+        });
 
         // Next Button
         JButton next = new JButton("Next");
 
-        // Start Button Handler
-            // to-do
+        // Next Button Handler
+        next.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){
+                grid.fetchCurrentData(0);
+            }
+        });
         
         // Clear Button
         JButton clear = new JButton("Clear");
@@ -204,7 +216,7 @@ class Grid extends JPanel {
     private int roundedY = 0;
 
     // Color variable for coloring / uncoloring a square
-    private Color color;
+    public Color color;
 
     // 2D Array to store states of each square
     private int arr[][] = new int[15][15];
@@ -257,10 +269,208 @@ class Grid extends JPanel {
 
     // Clear functionality, sets all squares back to WHITE
     public void clearAllSquares() {
+        for (int a = 0; a < 15; a++)
+        {
+            for (int b = 0; b < 15; b++)
+            {
+                arr[a][b] = 0;
+            }
+        }
+
         color = Color.WHITE;
         repaint();
     }
+    
+    int XPos = 0;
+    int YPos = 0;
+    int j = 0;
 
+    // Main Function (starts the process)
+    // Next generation will be run thru CalculateNeighbors
+    public void fetchCurrentData(int flag){
+        //flag = getButton();
+        boolean repeat = false;
+
+        if (flag == 0)
+        {
+            j = 1;
+        }
+
+        else {
+            j = 999;
+        }
+
+        for (int die4u = 0; die4u < j; die4u++) {
+            repeat = false;
+            int[][] nextGenerationGrid = new int[15][15];
+            nextGenerationGrid = calculateNeighbours(nextGenerationGrid, arr);
+            arr = nextGenerationGrid;
+            //flag = getButton();
+            // Repainting based on new array
+            for (int eggs = 0; eggs < 15; eggs++)
+            {
+                for (int chicken = 0; chicken < 15; chicken++)
+                {
+                    if (arr[eggs][chicken] == 1)
+                    {
+                        repeat = true;
+                    }
+                }
+            }
+
+
+            //System.out.println(color)
+
+            for (int x = 0; x < 15; x++)
+            {
+                for (int y = 0; y < 15; y++)
+                {   
+                    if (arr[x][y] == 1)
+                    {
+                        //System.out.println("PAINTING!");
+                        color = Color.YELLOW;
+                        XPos = (x*20)+50;
+                        YPos = (y*20)+50;
+                        
+                        paintImmediately(XPos,YPos,20,20);
+                        //repaint(50,50,20,20);
+                    }
+
+                    else if (arr[x][y] == 0)
+                    {
+                        //System.out.println("PAINTING!");
+                        color = Color.WHITE;
+                        XPos = (x*20)+50;
+                        YPos = (y*20)+50;
+                        
+                        paintImmediately(XPos,YPos,20,20);
+                        //repaint(50,50,20,20);
+                    }
+                }
+            }
+            
+            if (!repeat)
+            {
+                break;
+            }
+        }
+    }
+
+    //private boolean getButton() {
+        /* get the value of button. When start is pressed make the valye b == True and when the stop button is pressed change its value to False */
+       // boolean b = true; // Get the value here
+        //return b;
+   // }
+
+    // 2nd Step
+    private int[][] calculateNeighbours(int[][] nextGenerationGrid, int[][] originalGrid) {
+        // iterate through all cells and calculate the each cell's neighbors
+        for(int i=0; i < 15; i++){
+            for(int j=0; j< 15; j++){
+                nextGenerationGrid[i][j] = getSumOfNeighnors(originalGrid, 15, 15, i, j);
+                //System.out.print(nextGenerationGrid[i][j] + " ");
+                // WORKS TILL HERE
+            }
+            //System.out.println("");
+        }
+
+        //System.out.println("OG GRID");
+
+        /*for(int i=0; i < 15; i++){
+            for(int j=0; j< 15; j++){
+               //originalGrid[i][j] = getSumOfNeighnors(originalGrid, 15, 15, i, j);
+                //System.out.print(originalGrid[i][j] + " ");
+                // WORKS TILL HERE
+            }
+            //System.out.println("");
+        }*/
+        
+        return checkFinalAliveOrDead(nextGenerationGrid,originalGrid); // returns resulting next generation grid
+    }
+    
+    // 100% WORKS 
+    private int getSumOfNeighnors(int[][] originalGrid, int height, int width, int i, int j) {
+        int sum = 0;
+        // logic to calculate the total number of neighbors
+        if (i != 0 && j != 0){
+            if(originalGrid[i-1][j-1] == 1) { // 1st neighbor
+                sum++;
+            }
+        }
+        if (i != 0){
+            if(originalGrid[i -1][j] == 1){ // 2nd neighbor
+                sum++;
+            }
+        }
+        if (i != 0 && j != width -1){//3
+            if(originalGrid[i-1][j+1] == 1){ // 3rd neighbor
+                sum++;
+            }
+        }
+        if (j != 0){
+            if(originalGrid[i][j-1] == 1){ // 4th neighbor
+                sum++;
+            }
+        }
+        if (j != width -1){
+            if(originalGrid[i][j+1] == 1){ // 5th neighbor
+                sum++;
+            }
+        }
+        if (i != height -1 && j != 0){
+            if(originalGrid[i +1][j-1] == 1){ // 6th neighbor
+                sum++;
+            }
+        }
+        if (i != height -1){
+            if(originalGrid[i +1][j] == 1){ // 7th neighbor
+                sum++;
+            }
+        }
+        if (i != height -1 && j != width -1){
+            if(originalGrid[i+1][j+1] == 1){ // 8th neighbor
+                sum++;
+            }
+        }
+        return sum;
+    }
+
+    // 3rd step
+    // WORKS I THINK
+    private int[][] checkFinalAliveOrDead(int[][] nextGenerationGrid1,int[][] originalGrid) {
+        // check the number of neighbors and decide if the cell should live or die
+
+        // Rules
+        // System.out.println("NEXT GEN GRID YO");
+        for(int i=0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                if(nextGenerationGrid1[i][j] < 2 && originalGrid[i][j] == 1){
+                    nextGenerationGrid1[i][j] = 0;
+                }
+                else if(nextGenerationGrid1[i][j] > 3 && originalGrid[i][j] == 1){
+                    nextGenerationGrid1[i][j] = 0;
+                }
+                else if(nextGenerationGrid1[i][j] == 3 && originalGrid[i][j] == 1){
+                    nextGenerationGrid1[i][j] = 1;
+                }
+                else if(nextGenerationGrid1[i][j] == 2 && originalGrid[i][j] == 1){
+                    nextGenerationGrid1[i][j] = 1;
+                }
+                else if(nextGenerationGrid1[i][j] == 3 && originalGrid[i][j] == 0){
+                    nextGenerationGrid1[i][j] = 1;
+                }
+                else {
+                    nextGenerationGrid1[i][j] = 0;
+                }
+
+                //System.out.print(nextGenerationGrid1[i][j] + " ");
+            }
+            //System.out.println();
+        }
+        return nextGenerationGrid1;
+    }
+
+    
     // Painting components
     public void paintComponent(Graphics g) {
         super.paintComponent(g);       
@@ -278,5 +488,6 @@ class Grid extends JPanel {
                 g.drawRect(x,y,20,20);
             }
         }
-    }  
+    }
 }
+
