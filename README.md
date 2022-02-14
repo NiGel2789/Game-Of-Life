@@ -1,6 +1,6 @@
 ## Getting Started
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Welcome to my Game of Life remake, powered by Java and Swing for CSE 563 at Arizona State University.
 
 ## Folder Structure
 
@@ -23,5 +23,6 @@ Once the board is filled with only unpopulated spaces, the algorithm will stop a
 The rules of the game are in the 'Explanation' button.
 The 'Clear' button clears the grid.
 The 'Next' button iterates through the generations one by one.
- 
+
+ 
  
